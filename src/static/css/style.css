@@ -3,6 +3,7 @@
 :root {
     --text: rgb(27, 27, 27);
     --app_bg: rgb(250, 250, 250);
+    --box_bg: white;
     
     --border_color: rgb(206, 206, 206);
 
@@ -114,7 +115,11 @@ div.button.big {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
+.menu {
+    height: 30px;
+}
+
 #ide {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 30px);
 }

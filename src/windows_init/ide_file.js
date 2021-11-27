@@ -29,7 +29,7 @@ const ideFileWindow = (filePath) => {
         event.reply("file_path", filePath);
     });
 
-    ideFileWin.webContents.openDevTools();
+    //ideFileWin.webContents.openDevTools();
 };
 
 module.exports = ideFileWindow;
