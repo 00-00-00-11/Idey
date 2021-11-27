@@ -85,6 +85,14 @@ div.button.big {
     text-align: center;
 }
 
+.fs_1 {
+    font-size: 1rem;
+}
+
+.fs_1-25 {
+    font-size: 1.25rem;
+}
+
 .fs_2 {
     font-size: 2rem;
 }
@@ -116,10 +124,32 @@ div.button.big {
 }
 
 .menu {
-    height: 30px;
+    height: 20px;
+}
+
+.menu_button {
+    height: 20px;
+    
+    padding: 0 6px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu_button:hover:not(.menu_button_unclickable) {
+    background: grey;
+}
+
+.menu_button:hover:not(.menu_button_unclickable) *, .menu_button:hover:not(.menu_button_unclickable) {
+    color: white;
+}
+
+.menu_button_unclickable {
+    color: rgb(175, 175, 175);
 }
 
 #ide {
     width: 100%;
-    height: calc(100vh - 30px);
+    height: calc(100vh - 20px);
 }

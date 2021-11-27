@@ -23,6 +23,10 @@ const ideFileWindow = (filePath) => {
         ideFileWin.webContents.send("reload");
     });
 
+    electronLocalshortcut.register(ideFileWin, "Ctrl+S", () => {
+        ideFileWin.webContents.send("save_file");
+    });
+
     require('@electron/remote/main').enable(ideFileWin.webContents);
 
     ipcMain.on("request_file_path", (event, arg) => {
