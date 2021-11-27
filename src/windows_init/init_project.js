@@ -12,12 +12,13 @@ const initProjectWindow = () => {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }
+        },
     });
 
     initProjectWin.setMenu(null);
 
     initProjectWin.loadFile(path.join(__dirname, '../windows/initproject.html'));
+
 
     electronLocalshortcut.register(initProjectWin, "Ctrl+R", () => {
         initProjectWin.webContents.send("reload");
@@ -25,7 +26,7 @@ const initProjectWindow = () => {
 
     require('@electron/remote/main').enable(initProjectWin.webContents);
 
-    //initProjectWin.webContents.openDevTools();
+    initProjectWin.webContents.openDevTools();
 };
 
 module.exports = initProjectWindow;
