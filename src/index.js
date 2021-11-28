@@ -32,3 +32,8 @@ ipcMain.on('open_file', (event, arg) => {
   ideFileWindow(arg);
   event.reply("close");
 });
+
+ipcMain.on("exit_to_welcome_screen", (event, arg) => {
+  initProjectWindow();
+  event.reply("close");
+});

@@ -29,3 +29,12 @@ const saveFile = (event) => {
 
 ipcRenderer.on("save_file", saveFile);
 document.getElementById("save_file").onclick = saveFile;
+
+document.getElementById("save_file_main_menu").onclick = () => {
+    document.querySelector(".main_menu_container").classList.add("display_none");
+    saveFile();
+};
+
+ipcRenderer.on('close', () => {
+    remote.getCurrentWindow().close();
+});

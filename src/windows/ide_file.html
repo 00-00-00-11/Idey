@@ -10,23 +10,43 @@
 </head>
 
 <body>
-    <div class="menu">
-        <div class="menu_button">
-            <span class="mdi mdi-menu fs_1-25"></span>
-        </div>
+    <div class="main_menu_container display_none">
+        <div class="main_menu">
+            <div class="grid row_gap_2">
+                <img src="../static/img/Idey-Icon.png">
 
-        <div class="menu_button menu_button_unclickable" id="save_file">
-            Save
+                <div class="grid column_gap_1">
+                    <button id="save_file_main_menu"><span class="mdi mdi-content-save fs_1-25"></span> Save</button>
+
+                    <button id="exit_to_welcome_screen"><span class="mdi mdi-exit-to-app fs_1-25"></span> Exit to welcome screen</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="ide"></div>
+    <div class="file_ide_grid">
+        <div class="menu">
+            <div class="menu_button" id="main_menu_button">
+                <span class="mdi mdi-menu fs_1-25"></span>
+            </div>
+
+            <div class="menu_button menu_button_unclickable" id="save_file">
+                Save
+            </div>
+        </div>
+
+        <div id="ide"></div>
+    </div>
 
     <script src="../static/js/ace/ace.js"></script>
     <script src="../static/js/ace/ext-modelist.js"></script>
 
     <script src="../static/js/refresh.js"></script>
     <script src="../static/js/show_window.js"></script>
+
+    <script src="../static/js/main_menu.js"></script>
+    <script>initMainMenu("#main_menu_button");</script>
+
     <script src="../static/js/ide_file.js"></script>
 </body>
 
