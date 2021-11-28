@@ -33,6 +33,10 @@ const ideFileWindow = (filePath) => {
         event.reply("file_path", filePath);
     });
 
+    ipcMain.on("init_ac", (event, arg) => {
+        event.reply("init_ac_response");
+    });
+
     ideFileWin.webContents.openDevTools();
 };
 

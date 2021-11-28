@@ -4,6 +4,7 @@ const fs = require('fs');
 ipcRenderer.send("request_file_path");
 
 var editor = null;
+var langTools = null;
 var filePath = null;
 
 ipcRenderer.on("file_path", (event, arg) => {
@@ -11,7 +12,15 @@ ipcRenderer.on("file_path", (event, arg) => {
 
     document.title = `${path.basename(filePath)} | Idey`;
 
+    langTools = ace.require("ace/ext/language_tools");
+
     editor = ace.edit("ide");
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+
     editor.setValue(fs.readFileSync(filePath, "utf8"));
     var modelist = ace.require("ace/ext/modelist");
     var mode = modelist.getModeForPath(filePath).mode;
@@ -20,6 +29,8 @@ ipcRenderer.on("file_path", (event, arg) => {
     editor.on("input", () => {
         document.getElementById("save_file").classList.remove("menu_button_unclickable");
     });
+
+    ipcRenderer.send("init_ac");
 });
 
 const saveFile = (event) => {
