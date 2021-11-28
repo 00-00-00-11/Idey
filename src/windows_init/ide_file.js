@@ -37,7 +37,7 @@ const ideFileWindow = (filePath) => {
         event.reply("init_ac_response");
     });
 
-    ideFileWin.webContents.openDevTools();
+    //ideFileWin.webContents.openDevTools();
 };
 
 module.exports = ideFileWindow;

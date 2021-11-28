@@ -46,9 +46,9 @@ const saveFile = (event) => {
             }
         }
 
-        localStorage.setItem("history", JSON.stringify([{ path: filePath, type: "file", time: Math.round(Date.now() / 1000) }, ...history]));
+        localStorage.setItem("history", JSON.stringify([{ path: filePath, type: "file", time: Math.floor(Date.now() / 1000) }, ...history]));
     } else {
-        localStorage.setItem("history", JSON.stringify([{ path: filePath, type: "file", time: Math.round(Date.now() / 1000) }]));
+        localStorage.setItem("history", JSON.stringify([{ path: filePath, type: "file", time: Math.floor(Date.now() / 1000) }]));
     }
 };
 

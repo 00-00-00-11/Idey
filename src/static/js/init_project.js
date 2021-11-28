@@ -36,6 +36,31 @@ document.getElementById("open_file").onclick = async (e) => {
 
 //Recent files
 
+function timeCalc(timestamp) {
+    let now = Math.floor(Date.now() / 1000);
+
+    let seconds = Math.floor(now - timestamp);
+    let minutes = Math.floor(seconds / 60);
+    let hours = Math.floor(minutes / 60);
+    let days = Math.floor(hours / 24);
+    let months = Math.floor(days / 30);
+    let years = Math.floor(days / 365);
+
+    if (seconds < 60) {
+        return `${seconds} seconds ago`;
+    } else if (minutes < 60) {
+        return `${minutes} minutes ago`;
+    } else if (hours < 24) {
+        return `${hours} hours ago`;
+    } else if (days < 30) {
+        return `${days} days ago`;
+    } else if (days < 365) {
+        return `${months} months ago`;
+    } else {
+        return `${years} years ago`;
+    }
+}
+
 if (localStorage.getItem("history") && Array.isArray(JSON.parse(localStorage.getItem("history")))) {
     let history = JSON.parse(localStorage.getItem("history"));
     let recentProjectsList = document.getElementById("recent_projects");
@@ -45,7 +70,10 @@ if (localStorage.getItem("history") && Array.isArray(JSON.parse(localStorage.get
             let className = (i % 2 == 0) ? "recent_item_even" : "recent_item_odd";
 
             let element = document.createElement(`div`);
-            element.innerHTML = `<div class="${className}"><span class="mdi mdi-file"></span> ${escapeHTML(nodePath.basename(history[i].path))}</div>`;
+            element.innerHTML = `<div class="${className}">
+                <span class="mdi mdi-file"></span> ${escapeHTML(nodePath.basename(history[i].path))}
+                <span class="recent_item_time">&nbsp;&nbsp;${escapeHTML(timeCalc(history[i].time))}</span>
+            </div>`;
             element = element.firstChild;
 
             element = recentProjectsList.insertAdjacentElement("beforeend", element);
