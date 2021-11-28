@@ -36,6 +36,20 @@ ipcRenderer.on("file_path", (event, arg) => {
 const saveFile = (event) => {
     fs.writeFileSync(filePath, editor.getValue(), "utf8");
     document.getElementById("save_file").classList.add("menu_button_unclickable");
+
+    if (localStorage.getItem("history") && Array.isArray(JSON.parse(localStorage.getItem("history")))) {
+        let history = JSON.parse(localStorage.getItem("history"));
+
+        for (let i in history) {
+            if (history[i].path == filePath && history[i].type == "file") {
+                history.splice(i, 1);
+            }
+        }
+
+        localStorage.setItem("history", JSON.stringify([{ path: filePath, type: "file", time: Math.round(Date.now() / 1000) }, ...history]));
+    } else {
+        localStorage.setItem("history", JSON.stringify([{ path: filePath, type: "file", time: Math.round(Date.now() / 1000) }]));
+    }
 };
 
 ipcRenderer.on("save_file", saveFile);

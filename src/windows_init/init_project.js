@@ -25,7 +25,7 @@ const initProjectWindow = () => {
 
     require('@electron/remote/main').enable(initProjectWin.webContents);
 
-    //initProjectWin.webContents.openDevTools();
+    initProjectWin.webContents.openDevTools();
 };
 
 module.exports = initProjectWindow;
