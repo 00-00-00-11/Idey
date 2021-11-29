@@ -1,8 +1,8 @@
 {
   "name": "idey",
-  "productName": "idey",
+  "productName": "Idey",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Yet another IDE",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
