@@ -33,10 +33,13 @@ ipcRenderer.on("file_path", (event, arg) => {
 
     document.title = `${path.basename(filePath)} | Idey`;
 
+    let fileExtension = path.basename(filePath).split(".");
+    fileExtension = fileTypes[fileExtension[fileExtension.length - 1]];
+
     amdRequire(['vs/editor/editor.main'], function () {
         ide = monaco.editor.create(document.getElementById('ide'), {
             value: fs.readFileSync(filePath, "utf-8"),
-            language: 'javascript'
+            language: fileExtension
         });
 
         ide.layout();
