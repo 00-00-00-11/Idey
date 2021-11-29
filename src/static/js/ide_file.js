@@ -34,7 +34,7 @@ ipcRenderer.on("file_path", (event, arg) => {
     document.title = `${path.basename(filePath)} | Idey`;
 
     let fileExtension = path.basename(filePath).split(".");
-    fileExtension = fileTypes[fileExtension[fileExtension.length - 1]];
+    fileExtension = fileTypes[fileExtension[fileExtension.length - 1]] || undefined;
 
     amdRequire(['vs/editor/editor.main'], function () {
         ide = monaco.editor.create(document.getElementById('ide'), {
