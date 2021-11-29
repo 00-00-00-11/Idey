@@ -75,7 +75,7 @@ ipcRenderer.on("file_path", (event, arg) => {
 
         emmetHTML(
             monaco,
-            ["html", "php", "phtml"]
+            ["html", "htm", "php", "phtml"]
         );
     });
 });
