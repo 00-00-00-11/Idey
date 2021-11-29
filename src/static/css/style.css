@@ -140,27 +140,31 @@ div.button.big {
     grid-template-columns: 1fr 1fr;
 }
 
-.recent_item_even, .recent_item_odd {
+.list_item_even, .list_item_odd {
     padding: 0.35rem 0.5rem;
 }
 
-.recent_item_odd {
+.list_item_odd {
     background: var(--list_odd);
 }
 
-.recent_item_even:hover, .recent_item_odd:hover {
+.list_item_even:hover, .list_item_odd:hover {
     background: var(--blue-accent);
     color: white;
 
     cursor: pointer;
 }
 
-.recent_item_even:hover > span, .recent_item_odd:hover > span {
+.list_item_even:hover > span, .list_item_odd:hover > span {
     color: white;
 }
 
-.recent_item_time {
+.list_item_sub {
     color: var(--light_text);
+}
+
+.list_item_active, .list_item_active > span {
+    color: var(--blue-accent);
 }
 
 .file_ide_grid {
@@ -235,7 +239,7 @@ div.button.big {
     overflow: hidden;
 }
 
-#ide {
+#ide, .ide {
     width: 100%;
     height: 100%;
 }
@@ -243,4 +247,11 @@ div.button.big {
 #terminal {
     width: 100%;
     height: 20rem;
+}
+
+.folder_page_grid {
+    height: 100vh;
+
+    display: grid;
+    grid-template-columns: 1fr 5fr;
 }

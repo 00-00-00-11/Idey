@@ -67,12 +67,12 @@ if (localStorage.getItem("history") && Array.isArray(JSON.parse(localStorage.get
 
     for (let i in history) {
         if (history[i].type == "file") {
-            let className = (i % 2 == 0) ? "recent_item_even" : "recent_item_odd";
+            let className = (i % 2 == 0) ? "list_item_even" : "list_item_odd";
 
             let element = document.createElement(`div`);
             element.innerHTML = `<div class="${className}">
                 <span class="mdi mdi-file"></span> ${escapeHTML(nodePath.basename(history[i].path))}
-                <span class="recent_item_time">&nbsp;&nbsp;${escapeHTML(timeCalc(history[i].time))}</span>
+                <span class="list_item_sub">&nbsp;&nbsp;${escapeHTML(timeCalc(history[i].time))}</span>
             </div>`;
             element = element.firstChild;
 

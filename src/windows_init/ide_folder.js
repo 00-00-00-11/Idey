@@ -1,4 +1,4 @@
-const { BrowserWindow, ipcMain } = require('electron');
+const { BrowserWindow, BrowserView, ipcMain } = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const path = require('path');
 
@@ -11,13 +11,14 @@ const ideFolderWindow = (folderPath) => {
 
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
+            devTools: true
         },
     });
 
-    ideFolderWin.setMenu(null);
-
     ideFolderWin.loadFile(path.join(__dirname, '../windows/ide_folder.html'));
+
+    ideFolderWin.setMenu(null);
 
     electronLocalshortcut.register(ideFolderWin, "Ctrl+R", () => {
         ideFolderWin.webContents.send("reload");

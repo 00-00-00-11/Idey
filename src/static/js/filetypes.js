@@ -9,5 +9,7 @@ let fileTypes = {
     "py": "python",
     "c": "c",
     "cpp": "cpp",
-    "java": "java"
+    "java": "java",
+    "md": "markdown",
+    "json": "json"
 };

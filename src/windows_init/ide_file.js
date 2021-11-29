@@ -7,7 +7,7 @@ const ideFileWindow = (filePath) => {
         width: 1100,
         height: 900,
 
-        show: true,
+        show: false,
 
         webPreferences: {
             nodeIntegration: true,
