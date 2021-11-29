@@ -30,6 +30,8 @@ const ideFileWindow = (filePath) => {
     require('@electron/remote/main').enable(ideFileWin.webContents);
 
     ipcMain.on("request_file_path", (event, arg) => {
+        if (ideFileWin.isDestroyed()) return;
+        
         ideFileWin.webContents.send("file_path", filePath);
     });
 
