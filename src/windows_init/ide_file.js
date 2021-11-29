@@ -30,7 +30,7 @@ const ideFileWindow = (filePath) => {
     require('@electron/remote/main').enable(ideFileWin.webContents);
 
     ipcMain.on("request_file_path", (event, arg) => {
-        event.reply("file_path", filePath);
+        ideFileWin.webContents.send("file_path", filePath);
     });
 
     ipcMain.on("init_ac", (event, arg) => {
