@@ -51,6 +51,20 @@ ipcRenderer.on("file_path", (event, arg) => {
         ide.getModel().onDidChangeContent((event) => {
             document.getElementById("save_file").classList.remove("menu_button_unclickable");
         });
+
+        //Command palette custom items
+
+        ide.addAction({
+            id: "save-file",
+            label: "Save File",
+            run: saveFile,
+        });
+
+        ide.addAction({
+            id: "exit-to-main-menu",
+            label: "Exit to main menu",
+            run: exitToMainMenu,
+        });
     });
 });
 
@@ -71,6 +85,10 @@ const saveFile = (event) => {
     } else {
         localStorage.setItem("history", JSON.stringify([{ path: filePath, type: "file", time: Math.floor(Date.now() / 1000) }]));
     }
+};
+
+const exitToMainMenu = () => {
+    ipcRenderer.send("exit_to_welcome_screen");
 };
 
 ipcRenderer.on("save_file", saveFile);
