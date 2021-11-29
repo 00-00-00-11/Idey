@@ -5,6 +5,8 @@ const amdLoader = require("../../node_modules/monaco-editor/min/vs/loader");
 const amdRequire = amdLoader.require;
 const amdDefine = amdLoader.require.define;
 
+const { emmetHTML } = require("emmet-monaco-es");
+
 function uriFromPath(_path) {
     var pathName = path.resolve(_path).replace(/\\/g, '/');
     if (pathName.length > 0 && pathName.charAt(0) !== '/') {
@@ -37,6 +39,7 @@ ipcRenderer.on("file_path", (event, arg) => {
     fileExtension = fileTypes[fileExtension[fileExtension.length - 1]] || undefined;
 
     amdRequire(['vs/editor/editor.main'], function () {
+        //Init editor
         ide = monaco.editor.create(document.getElementById('ide'), {
             value: fs.readFileSync(filePath, "utf-8"),
             language: fileExtension
@@ -47,6 +50,8 @@ ipcRenderer.on("file_path", (event, arg) => {
         window.onresize = () => {
             ide.layout();
         }
+
+        //Save button highlighter
 
         ide.getModel().onDidChangeContent((event) => {
             document.getElementById("save_file").classList.remove("menu_button_unclickable");
@@ -65,6 +70,13 @@ ipcRenderer.on("file_path", (event, arg) => {
             label: "Exit to main menu",
             run: exitToMainMenu,
         });
+
+        //Emmet
+
+        emmetHTML(
+            monaco,
+            ["html", "php", "phtml"]
+        );
     });
 });
 
