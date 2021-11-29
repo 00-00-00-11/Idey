@@ -231,6 +231,10 @@ div.button.big {
     height: 4rem;
 }
 
+.ide_container {
+    overflow: hidden;
+}
+
 #ide {
     width: 100%;
     height: 100%;

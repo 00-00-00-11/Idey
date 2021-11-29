@@ -7,7 +7,7 @@ const ideFileWindow = (filePath) => {
         width: 1100,
         height: 900,
 
-        show: false,
+        show: true,
 
         webPreferences: {
             nodeIntegration: true,
@@ -37,7 +37,7 @@ const ideFileWindow = (filePath) => {
         event.reply("init_ac_response");
     });
 
-    //ideFileWin.webContents.openDevTools();
+    ideFileWin.webContents.openDevTools();
 };
 
 module.exports = ideFileWindow;

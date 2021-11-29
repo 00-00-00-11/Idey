@@ -1,40 +1,58 @@
 const path = require('path');
 const fs = require('fs');
 
+const amdLoader = require("../../node_modules/monaco-editor/min/vs/loader");
+const amdRequire = amdLoader.require;
+const amdDefine = amdLoader.require.define;
+
+function uriFromPath(_path) {
+    var pathName = path.resolve(_path).replace(/\\/g, '/');
+    if (pathName.length > 0 && pathName.charAt(0) !== '/') {
+        pathName = '/' + pathName;
+    }
+    return encodeURI('file://' + pathName);
+}
+
+amdRequire.config({
+    baseUrl: uriFromPath(path.join(__dirname, '../../node_modules/monaco-editor/min'))
+});
+
+self.module = undefined;
+
+//Request current editor file path
 ipcRenderer.send("request_file_path");
 
-var editor = null;
+//Global variables
+var ide = null;
 var langTools = null;
 var filePath = null;
 
+//Runs when file path is requested
 ipcRenderer.on("file_path", (event, arg) => {
     filePath = arg;
 
     document.title = `${path.basename(filePath)} | Idey`;
 
-    langTools = ace.require("ace/ext/language_tools");
+    amdRequire(['vs/editor/editor.main'], function () {
+        ide = monaco.editor.create(document.getElementById('ide'), {
+            value: fs.readFileSync(filePath, "utf-8"),
+            language: 'javascript'
+        });
 
-    editor = ace.edit("ide");
-    editor.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: true
+        ide.layout();
+
+        window.onresize = () => {
+            ide.layout();
+        }
+
+        ide.getModel().onDidChangeContent((event) => {
+            document.getElementById("save_file").classList.remove("menu_button_unclickable");
+        });
     });
-
-    editor.setValue(fs.readFileSync(filePath, "utf8"));
-    var modelist = ace.require("ace/ext/modelist");
-    var mode = modelist.getModeForPath(filePath).mode;
-    editor.session.setMode(mode);
-
-    editor.on("input", () => {
-        document.getElementById("save_file").classList.remove("menu_button_unclickable");
-    });
-
-    ipcRenderer.send("init_ac");
 });
 
 const saveFile = (event) => {
-    fs.writeFileSync(filePath, editor.getValue(), "utf8");
+    fs.writeFileSync(filePath, ide.getValue(), "utf8");
     document.getElementById("save_file").classList.add("menu_button_unclickable");
 
     if (localStorage.getItem("history") && Array.isArray(JSON.parse(localStorage.getItem("history")))) {
