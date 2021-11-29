@@ -35,11 +35,7 @@ const ideFileWindow = (filePath) => {
         ideFileWin.webContents.send("file_path", filePath);
     });
 
-    ipcMain.on("init_ac", (event, arg) => {
-        event.reply("init_ac_response");
-    });
-
-    ideFileWin.webContents.openDevTools();
+    //ideFileWin.webContents.openDevTools();
 };
 
 module.exports = ideFileWindow;
