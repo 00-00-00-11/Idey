@@ -163,8 +163,12 @@ div.button.big {
     color: var(--light_text);
 }
 
+.list_item_active {
+    background: var(--text);
+}
+
 .list_item_active, .list_item_active > span {
-    color: var(--blue-accent);
+    color: var(--box_bg);
 }
 
 .file_ide_grid {

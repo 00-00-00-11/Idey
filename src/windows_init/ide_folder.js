@@ -18,8 +18,6 @@ const ideFolderWindow = (folderPath) => {
 
     ideFolderWin.loadFile(path.join(__dirname, '../windows/ide_folder.html'));
 
-    ideFolderWin.setMenu(null);
-
     electronLocalshortcut.register(ideFolderWin, "Ctrl+R", () => {
         ideFolderWin.webContents.send("reload");
     });

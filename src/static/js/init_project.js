@@ -20,6 +20,10 @@ const openFile = async (path) => {
     ipcRenderer.send('open_file', path);
 };
 
+const openFolder = async (path) => {
+    ipcRenderer.send('open_folder', path);
+};
+
 document.getElementById("open_file").onclick = async (e) => {
     var path = await dialog.showOpenDialog(remote.getCurrentWindow(), {
         properties: ['openFile'],
@@ -80,6 +84,23 @@ if (localStorage.getItem("history") && Array.isArray(JSON.parse(localStorage.get
 
             element.onclick = () => {
                 openFile(history[i].path);
+            };
+        }
+
+        if (history[i].type == "folder") {
+            let className = (i % 2 == 0) ? "list_item_even" : "list_item_odd";
+
+            let element = document.createElement(`div`);
+            element.innerHTML = `<div class="${className}">
+                <span class="mdi mdi-folder"></span> ${escapeHTML(nodePath.basename(history[i].path))}
+                <span class="list_item_sub">&nbsp;&nbsp;${escapeHTML(timeCalc(history[i].time))}</span>
+            </div>`;
+            element = element.firstChild;
+
+            element = recentProjectsList.insertAdjacentElement("beforeend", element);
+
+            element.onclick = () => {
+                openFolder(history[i].path);
             };
         }
     }

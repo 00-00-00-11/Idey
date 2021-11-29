@@ -1,6 +1,8 @@
+//Regular includes
 const fs = require('fs');
 const path = require('path');
 
+//Requirements for Monaco
 const amdLoader = require("../../node_modules/monaco-editor/min/vs/loader");
 const amdRequire = amdLoader.require;
 const amdDefine = amdLoader.require.define;
@@ -20,11 +22,19 @@ amdRequire.config({
 });
 
 self.module = undefined;
+//End - Requirements for Monaco
 
+//Request path of current folder
 ipcRenderer.send("request_folder_path");
 
+//File list elements
+let fileViewElements = {};
+
+let folderPath = null;
+
+//Runs when folder path is received
 ipcRenderer.on("folder_path", (event, arg) => {
-    let folderPath = arg;
+    folderPath = path.normalize(arg);
     let folderName = path.basename(folderPath);
 
     document.getElementById("folder_name").innerHTML = escapeHTML(folderName);
@@ -57,12 +67,15 @@ ipcRenderer.on("folder_path", (event, arg) => {
 
         let element = document.createElement(`div`);
         element.innerHTML = `<div class="${className}">
-                <span class="mdi mdi-file"></span> ${escapeHTML(path.basename(item))}
+                <span class="mdi mdi-file"></span>
+                <span class="filename">${escapeHTML(path.basename(item))}</span>
                 <span class="list_item_sub"></span>
             </div>`;
         element = element.firstChild;
 
         element = document.getElementById("path_list").insertAdjacentElement("beforeend", element);
+
+        fileViewElements[item] = element;
 
         element.onclick = () => {
             if (document.querySelector(".list_item_active")) document.querySelector(".list_item_active").classList.remove("list_item_active");
@@ -73,11 +86,45 @@ ipcRenderer.on("folder_path", (event, arg) => {
         };
     }
 });
+//End - Runs when folder path is received
 
+//Path to current file
+let currentFile = null;
+
+//File actions
+const saveFile = (_filePath = currentFile) => {
+    let filePath = path.normalize(_filePath);
+
+    fs.writeFileSync(filePath, ideCollection[filePath].getValue(), "utf-8");
+
+    fileViewElements[filePath].querySelector(".filename").innerHTML = escapeHTML(path.basename(filePath));
+
+    //Add folder to history
+    if (localStorage.getItem("history") && Array.isArray(JSON.parse(localStorage.getItem("history")))) {
+        let history = JSON.parse(localStorage.getItem("history"));
+
+        for (let i in history) {
+            if (history[i].path == folderPath && history[i].type == "folder") {
+                history.splice(i, 1);
+            }
+        }
+
+        localStorage.setItem("history", JSON.stringify([{ path: folderPath, type: "folder", time: Math.floor(Date.now() / 1000) }, ...history]));
+    } else {
+        localStorage.setItem("history", JSON.stringify([{ path: folderPath, type: "folder", time: Math.floor(Date.now() / 1000) }]));
+    }
+};
+//End - File actions
+
+//Collection of Monaco instances
 let ideCollection = {};
+//Collection of IDE elements
 let ideElementCollection = {};
 
-function switchEditor(filePath) {
+//Called when editor should be switched to a different file
+function switchEditor(_filePath) {
+    let filePath = path.normalize(_filePath);
+
     if (document.querySelector(`.ide:not(.display_none)`)) {
         document.querySelector(`.ide:not(.display_none)`).classList.add("display_none");
     }
@@ -112,8 +159,8 @@ function switchEditor(filePath) {
 
             //Save button highlighter
 
-            /*ide.getModel().onDidChangeContent((event) => {
-                document.getElementById("save_file").classList.remove("menu_button_unclickable");
+            ide.getModel().onDidChangeContent((event) => {
+                fileViewElements[filePath].querySelector(".filename").innerHTML = "•&nbsp;&nbsp;" + escapeHTML(path.basename(filePath));
             });
     
             //Command palette custom items
@@ -121,10 +168,10 @@ function switchEditor(filePath) {
             ide.addAction({
                 id: "save-file",
                 label: "Save File",
-                run: saveFile,
+                run: () => { saveFile(filePath); },
             });
     
-            ide.addAction({
+            /*ide.addAction({
                 id: "exit-to-main-menu",
                 label: "Exit to main menu",
                 run: exitToMainMenu,
@@ -146,7 +193,10 @@ function switchEditor(filePath) {
             ideCollection[filePath].layout();
         }
     }
+
+    currentFile = path.normalize(filePath);
 }
+//End - Called when editor should be switched to a different file
 
 function readDirectory(folderPath) {
     let entries = fs.readdirSync(folderPath, { withFileTypes: true });
@@ -166,3 +216,22 @@ function readDirectory(folderPath) {
 
     return { folders, files };
 }
+
+//Application Menu
+let menu = [
+    {
+        label: "File",
+        submenu: [
+            {
+                label: "Save",
+                accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
+                click: () => {
+                    saveFile();
+                }
+            }
+        ]
+    }
+];
+
+menu = remote.Menu.buildFromTemplate(menu);
+remote.Menu.setApplicationMenu(menu);
