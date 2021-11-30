@@ -91,7 +91,7 @@ function makeFileView() {
 
         let element = document.createElement(`div`);
         element.innerHTML = `<div class="${className}">
-                <span class="mdi mdi-${fileTypeIcons[extension] || "file"}"></span>
+                <span class="mdi mdi-${fileTypeIcons[extension] || "file icon-grey"}"></span>
                 <span class="filename">${escapeHTML(path.basename(item))}</span>
                 <span class="list_item_sub"></span>
             </div>`;
@@ -172,7 +172,8 @@ function switchEditor(_filePath) {
             //Init editor
             let ide = monaco.editor.create(editorElement, {
                 value: fs.readFileSync(filePath, "utf-8"),
-                language: fileExtension
+                language: fileExtension,
+                theme: (localStorage.getItem("dark_mode")) ? "vs-dark" : undefined
             });
 
             ideCollection[filePath] = ide;

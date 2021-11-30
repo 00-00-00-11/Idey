@@ -19,6 +19,21 @@
     font-size: 12px;
 }
 
+.dark_mode {
+    --text: rgb(221, 221, 221);
+    --light_text: rgb(88, 88, 88);
+
+    --app_bg: rgb(39, 39, 39);
+    --box_bg: rgb(0, 0, 0);
+    --list_odd: rgb(34, 34, 34);
+
+    --border_color: rgb(58, 58, 58);
+
+    --button_g: linear-gradient(180deg, rgb(46, 46, 46) 0%, rgb(41, 41, 41) 100%);
+    --button_g_hover: linear-gradient(180deg, rgb(46, 46, 46) 0%, rgb(32, 32, 32) 100%);
+    --button_g_active: linear-gradient(180deg,rgb(36, 36, 36) 0%, rgb(22, 22, 22) 100%);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -277,7 +292,7 @@ div.button.big {
 }
 
 .icon-grey {
-    color: rgb(73, 73, 73);
+    color: grey;
 }
 
 .icon-php {

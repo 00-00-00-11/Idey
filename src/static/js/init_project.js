@@ -106,8 +106,22 @@ if (localStorage.getItem("history") && Array.isArray(JSON.parse(localStorage.get
     }
 }
 
-//Close window
+//Settings
+document.getElementById("dark_mode").onclick = () => {
+    if (localStorage.getItem("dark_mode")) {
+        localStorage.removeItem("dark_mode");
+        document.body.classList.remove("dark_mode");
+        return;
+    }
 
+    if (!localStorage.getItem("dark_mode")) {
+        localStorage.setItem("dark_mode", "on");
+        document.body.classList.add("dark_mode");
+        return;
+    }
+};
+
+//Close window
 ipcRenderer.on('close', () => {
     remote.getCurrentWindow().close();
 });
