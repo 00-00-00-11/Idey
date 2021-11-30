@@ -159,6 +159,10 @@ div.button.big {
     color: white;
 }
 
+.list_item_even > .mdi, .list_item_odd > .mdi {
+    font-size: 1.2rem;
+}
+
 .list_item_sub {
     color: var(--light_text);
 }
@@ -258,4 +262,24 @@ div.button.big {
 
     display: grid;
     grid-template-columns: 1fr 5fr;
+}
+
+.icon-yellow {
+    color: rgb(255, 217, 0);
+}
+
+.icon-blue {
+    color: rgb(0, 110, 255);
+}
+
+.icon-orange {
+    color: rgb(255, 102, 0);
+}
+
+.icon-grey {
+    color: rgb(73, 73, 73);
+}
+
+.icon-php {
+    color: #787CB5;
 }

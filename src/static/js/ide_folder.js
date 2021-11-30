@@ -84,11 +84,14 @@ function makeFileView() {
     for (let i in entries.files) {
         let item = entries.files[i];
 
+        let extension = path.basename(item).split(".");
+        extension = extension[extension.length - 1];
+
         let className = (i % 2 == 0) ? "list_item_even" : "list_item_odd";
 
         let element = document.createElement(`div`);
         element.innerHTML = `<div class="${className}">
-                <span class="mdi mdi-file"></span>
+                <span class="mdi mdi-${fileTypeIcons[extension] || "file"}"></span>
                 <span class="filename">${escapeHTML(path.basename(item))}</span>
                 <span class="list_item_sub"></span>
             </div>`;
