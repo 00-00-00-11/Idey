@@ -28,7 +28,7 @@ const ideFolderWindow = (folderPath) => {
         event.reply("folder_path", folderPath);
     });
 
-    //ideFolderWin.webContents.openDevTools();
+    ideFolderWin.webContents.openDevTools();
 };
 
 module.exports = ideFolderWindow;

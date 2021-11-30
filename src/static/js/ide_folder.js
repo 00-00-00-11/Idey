@@ -31,15 +31,28 @@ ipcRenderer.send("request_folder_path");
 let fileViewElements = {};
 
 let folderPath = null;
+let currentSubPath = "/";
 
 //Runs when folder path is received
 ipcRenderer.on("folder_path", (event, arg) => {
     folderPath = path.normalize(arg);
     let folderName = path.basename(folderPath);
 
-    document.getElementById("folder_name").innerHTML = escapeHTML(folderName);
+    makeFileView();
+});
+//End - Runs when folder path is received
 
-    let entries = readDirectory(folderPath);
+//Function for displaying files in current path
+function makeFileView() {
+    document.getElementById("path_list").innerHTML = "";
+
+    let entries = readDirectory(path.join(folderPath, currentSubPath));
+
+    console.log(currentSubPath)
+
+    if (currentSubPath !== "/" && currentSubPath !== "\\") {
+        entries.folders = ["..", ...entries.folders];
+    }
 
     for (let i in entries.folders) {
         let item = entries.folders[i];
@@ -55,9 +68,17 @@ ipcRenderer.on("folder_path", (event, arg) => {
 
         element = document.getElementById("path_list").insertAdjacentElement("beforeend", element);
 
-        element.onclick = () => {
-            //todo
-        };
+        if (item == "..") {
+            element.onclick = () => {
+                currentSubPath = path.join(currentSubPath, "..");
+                makeFileView();
+            };
+        } else {
+            element.onclick = () => {
+                currentSubPath = path.join(currentSubPath, path.basename(item));
+                makeFileView();
+            };
+        }
     }
 
     for (let i in entries.files) {
@@ -85,8 +106,10 @@ ipcRenderer.on("folder_path", (event, arg) => {
             switchEditor(item);
         };
     }
-});
-//End - Runs when folder path is received
+
+    document.getElementById("folder_name").innerHTML = escapeHTML(path.join(path.basename(folderPath), currentSubPath));
+}
+//End - Function for displaying files in current path
 
 //Path to current file
 let currentFile = null;
